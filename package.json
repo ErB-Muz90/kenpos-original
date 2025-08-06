@@ -9,7 +9,10 @@
     "start": "echo \"Please use a local server to serve index.html.\"",
     "lint": "echo \"ESLint not configured for static project.\""
   },
-  "dependencies": {},
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
   "devDependencies": {
     "typescript": "^5",
     "@types/react": "^19.1.0",
