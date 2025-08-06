@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Product, Permission, Settings } from '../types';
 import ProductModal from './inventory/ProductModal';
-import { ICONS } from '../../constants';
+import { ICONS } from '../constants';
 
 interface InventoryViewProps {
     products: Product[];
@@ -26,13 +26,13 @@ const InventoryView = ({ products, onAddProduct, onUpdateProduct, onDeleteProduc
     const canDelete = permissions.includes('delete_inventory');
 
     const filteredProducts = useMemo(() => {
-        return products.filter(p => 
+        return products.filter(p =>
             p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             p.sku.toLowerCase().includes(searchTerm.toLowerCase())
         );
     }, [products, searchTerm]);
-    
-    const categories = useMemo(() => [...new Set(products.map(p => p.category).filter(Boolean))].sort(), [products]);
+
+    const categories = useMemo(() => Array.from(new Set(products.map(p => p.category).filter(Boolean))).sort(), [products]);
 
     const handleNewClick = () => {
         setEditingProduct(undefined);
@@ -43,7 +43,7 @@ const InventoryView = ({ products, onAddProduct, onUpdateProduct, onDeleteProduc
         setEditingProduct(product);
         setIsModalOpen(true);
     };
-    
+
     const handleSaveProduct = (productData: Product | Omit<Product, 'id' | 'stock'>) => {
         if ('id' in productData) {
             onUpdateProduct(productData as Product);
@@ -79,7 +79,7 @@ const InventoryView = ({ products, onAddProduct, onUpdateProduct, onDeleteProduc
                 return row.join(',');
             })
         ];
-        
+
         const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
@@ -101,7 +101,7 @@ const InventoryView = ({ products, onAddProduct, onUpdateProduct, onDeleteProduc
                 const text = e.target?.result as string;
                 const lines = text.split(/\r\n|\n/).filter(line => line.trim() !== '');
                 if (lines.length < 2) throw new Error("CSV file must have a header and at least one data row.");
-                
+
                 const headerLine = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/\s+/g, ''));
                 const requiredHeaders = ['sku', 'name', 'price', 'category'];
                 for (const h of requiredHeaders) {
@@ -112,11 +112,11 @@ const InventoryView = ({ products, onAddProduct, onUpdateProduct, onDeleteProduc
                     const values = line.split(',');
                     const productData: any = {};
                     headerLine.forEach((header, index) => {
-                         // A simple way to remove quotes if they exist at the start/end
+                        // A simple way to remove quotes if they exist at the start/end
                         const value = values[index]?.trim().replace(/^"|"$/g, '');
                         productData[header] = value;
                     });
-                    
+
                     const price = parseFloat(productData.price);
                     if (isNaN(price)) throw new Error(`Invalid price for SKU ${productData.sku}`);
 
@@ -153,7 +153,7 @@ const InventoryView = ({ products, onAddProduct, onUpdateProduct, onDeleteProduc
                 {canEdit && (
                     <div className="flex items-center space-x-2">
                         <input type="file" ref={importInputRef} onChange={handleFileImport} accept=".csv" className="hidden" />
-                        <motion.button 
+                        <motion.button
                             onClick={() => importInputRef.current?.click()}
                             whileTap={{ scale: 0.95 }}
                             className="bg-white dark:bg-slate-700 dark:text-slate-200 text-slate-700 border border-slate-300 dark:border-slate-600 font-bold px-4 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors shadow-sm flex items-center"
@@ -161,7 +161,7 @@ const InventoryView = ({ products, onAddProduct, onUpdateProduct, onDeleteProduc
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
                             Import
                         </motion.button>
-                         <motion.button 
+                        <motion.button
                             onClick={exportToCSV}
                             whileTap={{ scale: 0.95 }}
                             className="bg-white dark:bg-slate-700 dark:text-slate-200 text-slate-700 border border-slate-300 dark:border-slate-600 font-bold px-4 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors shadow-sm flex items-center"
@@ -169,7 +169,7 @@ const InventoryView = ({ products, onAddProduct, onUpdateProduct, onDeleteProduc
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                             Export
                         </motion.button>
-                         <motion.button 
+                        <motion.button
                             onClick={handleNewClick}
                             whileTap={{ scale: 0.95 }}
                             className="bg-emerald-600 text-white font-bold px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors shadow-md flex items-center"
@@ -181,7 +181,7 @@ const InventoryView = ({ products, onAddProduct, onUpdateProduct, onDeleteProduc
                 )}
             </div>
             <div className="mb-4">
-                 <input
+                <input
                     type="text"
                     placeholder="Search inventory by name or SKU..."
                     className="w-full max-w-sm px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
@@ -208,7 +208,7 @@ const InventoryView = ({ products, onAddProduct, onUpdateProduct, onDeleteProduc
                         {filteredProducts.map(product => (
                             <tr key={product.id} className="bg-white dark:bg-slate-800 border-b dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700">
                                 <th scope="row" className="px-6 py-4 font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap flex items-center space-x-3">
-                                    <img src={product.imageUrl || `https://placehold.co/100x100/e2e8f0/475569?text=${product.name.charAt(0)}`} alt={product.name} className="w-10 h-10 rounded-md object-cover"/>
+                                    <img src={product.imageUrl || `https://placehold.co/100x100/e2e8f0/475569?text=${product.name.charAt(0)}`} alt={product.name} className="w-10 h-10 rounded-md object-cover" />
                                     <span>{product.name}</span>
                                 </th>
                                 <td className="px-6 py-4 font-mono text-xs">{product.sku}</td>
@@ -258,14 +258,14 @@ const InventoryView = ({ products, onAddProduct, onUpdateProduct, onDeleteProduc
                                     )}
                                 </td>
                                 <td className="px-6 py-4 text-right space-x-4 whitespace-nowrap">
-                                     <button onClick={() => onPrintBarcodeRequest(product)} className="font-medium text-blue-600 dark:text-blue-400 hover:underline">{ICONS.barcode}</button>
-                                     {canEdit && <button onClick={() => onAddToPORequest(product)} className="font-medium text-purple-600 dark:text-purple-400 hover:underline">Order</button>}
-                                     {canEdit && <button onClick={() => handleEditClick(product)} className="font-medium text-emerald-600 dark:text-emerald-400 hover:underline">Edit</button>}
-                                     {canDelete && <button onClick={() => onDeleteProductRequest(product)} className="font-medium text-red-600 dark:text-red-400 hover:underline">Delete</button>}
+                                    <button onClick={() => onPrintBarcodeRequest(product)} className="font-medium text-blue-600 dark:text-blue-400 hover:underline">{ICONS.barcode}</button>
+                                    {canEdit && <button onClick={() => onAddToPORequest(product)} className="font-medium text-purple-600 dark:text-purple-400 hover:underline">Order</button>}
+                                    {canEdit && <button onClick={() => handleEditClick(product)} className="font-medium text-emerald-600 dark:text-emerald-400 hover:underline">Edit</button>}
+                                    {canDelete && <button onClick={() => onDeleteProductRequest(product)} className="font-medium text-red-600 dark:text-red-400 hover:underline">Delete</button>}
                                 </td>
                             </tr>
                         ))}
-                         {filteredProducts.length === 0 && (
+                        {filteredProducts.length === 0 && (
                             <tr>
                                 <td colSpan={9} className="text-center py-10 text-slate-500 dark:text-slate-400">No products found. Add products via the "New Product" button.</td>
                             </tr>

@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sale, User, Shift, Settings } from '../types';
 import ZReportView from './pos/ZReportView';
-import { DEFAULT_SETTINGS } from '../../constants'; // Import default settings
+import { DEFAULT_SETTINGS } from '../constants'; // Import default settings
 
 interface ShiftReportViewProps {
   shifts: Shift[];
@@ -11,10 +11,10 @@ interface ShiftReportViewProps {
 }
 
 const StatCard = ({ title, value }: { title: string; value: string; }) => (
-    <div className="bg-slate-100 p-4 rounded-lg">
-        <p className="text-sm text-slate-500 font-medium">{title}</p>
-        <p className="text-xl font-bold text-slate-800">{value}</p>
-    </div>
+  <div className="bg-slate-100 p-4 rounded-lg">
+    <p className="text-sm text-slate-500 font-medium">{title}</p>
+    <p className="text-xl font-bold text-slate-800">{value}</p>
+  </div>
 );
 
 const ShiftReportView: React.FC<ShiftReportViewProps> = ({ shifts, sales, settings }) => {
@@ -31,12 +31,12 @@ const ShiftReportView: React.FC<ShiftReportViewProps> = ({ shifts, sales, settin
   if (selectedShift) {
     return (
       <div className="h-full bg-slate-100">
-         <ZReportView
-            shift={selectedShift}
-            sales={sales}
-            settings={settings || DEFAULT_SETTINGS}
-            onClose={() => setSelectedShift(null)}
-            isHistoricalView={true}
+        <ZReportView
+          shift={selectedShift}
+          sales={sales}
+          settings={settings || DEFAULT_SETTINGS}
+          onClose={() => setSelectedShift(null)}
+          isHistoricalView={true}
         />
       </div>
     );
@@ -68,10 +68,9 @@ const ShiftReportView: React.FC<ShiftReportViewProps> = ({ shifts, sales, settin
                   <td className="px-6 py-4">{new Date(shift.startTime).toLocaleString()}</td>
                   <td className="px-6 py-4">{shift.endTime ? new Date(shift.endTime).toLocaleString() : 'N/A'}</td>
                   <td className="px-6 py-4 text-right font-mono">{formatCurrency(shift.totalSales || 0)}</td>
-                  <td className={`px-6 py-4 text-right font-mono font-semibold ${
-                    variance === 0 ? 'text-slate-700' : variance > 0 ? 'text-amber-600' : 'text-red-600'
-                  }`}>{formatCurrency(variance)}</td>
-                   <td className="px-6 py-4 text-right">
+                  <td className={`px-6 py-4 text-right font-mono font-semibold ${variance === 0 ? 'text-slate-700' : variance > 0 ? 'text-amber-600' : 'text-red-600'
+                    }`}>{formatCurrency(variance)}</td>
+                  <td className="px-6 py-4 text-right">
                     <button className="font-medium text-emerald-600 hover:underline">View Report</button>
                   </td>
                 </tr>

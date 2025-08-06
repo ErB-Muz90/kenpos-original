@@ -4,27 +4,32 @@
   "private": true,
   "description": "A responsive, offline-capable, web-based Point of Sale (POS) system.",
   "scripts": {
-    "dev": "echo \"This is a static React project. Use a simple HTTP server to run.\"",
-    "build": "npm install && vite build",
-    "start": "echo \"Please use a local server to serve index.html.\"",
-    "lint": "echo \"ESLint not configured for static project.\""
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "chart.js": "^4.4.2",
+    "framer-motion": "^10.0.0",
+    "jsbarcode": "^3.11.5",
+    "jspdf": "^2.5.1",
+    "qrcode": "^1.5.4",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "framer-motion": "^10.0.0",
-    "jspdf": "^2.5.1",
-    "jsbarcode": "^3.11.5"
+    "recharts": "^2.12.2"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@types/chart.js": "^2.9.37",
+    "@types/jsbarcode": "^3.11.4",
+    "@types/jspdf": "^2.0.0",
+    "@types/qrcode": "^1.5.5",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "@types/qrcode": "^1.5.5",
-    "@types/jsbarcode": "^3.11.4",
-    "vite": "^5.0.0",
-    "tailwindcss": "^3.0.0",
+    "@types/recharts": "^1.8.23",
     "autoprefixer": "^10.0.0",
-    "@types/jspdf": "^2.0.0"
+    "tailwindcss": "^3.0.0",
+    "typescript": "^5",
+    "vite": "^5.0.0"
   }
 }
