@@ -5,7 +5,7 @@
   "description": "A responsive, offline-capable, web-based Point of Sale (POS) system.",
   "scripts": {
     "dev": "echo \"This is a static React project. Use a simple HTTP server to run.\"",
-    "build": "vite build",
+    "build": "npm install && vite build",
     "start": "echo \"Please use a local server to serve index.html.\"",
     "lint": "echo \"ESLint not configured for static project.\""
   },
@@ -15,6 +15,7 @@
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "@types/qrcode": "^1.5.5",
-    "@types/jsbarcode": "^3.11.4"
+    "@types/jsbarcode": "^3.11.4",
+    "vite": "^5.0.0"
   }
 }
